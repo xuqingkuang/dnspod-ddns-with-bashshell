@@ -6,15 +6,15 @@ API_ID=12345
 API_Token=abcdefghijklmnopq2333333
 domain=example.com
 host=home
-CHECKURL="http://ip.03k.org"
+CHECKURL="http://whatismyip.akamai.com/"
 #OUT="pppoe"
 #CONF END
 . /etc/profile
 date
 if (echo $CHECKURL |grep -q "://");then
 IPREX='([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])'
-URLIP=$(curl -4 -k $(if [ -n "$OUT" ]; then echo "--interface $OUT"; fi) -s $CHECKURL|grep -Eo "$IPREX"|tail -n1)
-if (echo $URLIP |grep -qEvo "$IPREX");then
+URLIP=$(curl -4 -k $(if [ -n "$OUT" ]; then echo "--interface $OUT"; fi) -s $CHECKURL)
+if ! [[ $URLIP =~ $IPREX ]]; then
 URLIP="Get $DOMAIN URLIP Failed."
 fi
 echo "[URL IP]:$URLIP"
